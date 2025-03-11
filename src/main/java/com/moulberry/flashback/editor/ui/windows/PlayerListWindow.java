@@ -107,7 +107,7 @@ public class PlayerListWindow {
         }
 
         ImGui.setNextWindowSizeConstraints(250, 50, 5000, 5000);
-        if (ImGui.begin("玩家列表###玩家列表", open, ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoFocusOnAppearing)) {
+        if (ImGui.begin("玩家列表###PlayerList", open, ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoFocusOnAppearing)) {
             ImGui.setNextItemWidth(ImGui.getContentRegionAvailX() - ImGuiHelper.calcTextWidth("搜索") - 32);
             if (ImGui.inputText("搜索", search)) {
                 lastSearch = null;

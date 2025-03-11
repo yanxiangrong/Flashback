@@ -41,7 +41,7 @@ public class MovementWindow {
         if (!wasDocked) {
             flags |= ImGuiWindowFlags.AlwaysAutoResize;
         }
-        if (ImGui.begin("动作###动作", open, flags)) {
+        if (ImGui.begin("运动###Movement", open, flags)) {
             wasDocked = ImGui.isWindowDocked();
 
             FlashbackConfig config = Flashback.getConfig();
@@ -49,7 +49,7 @@ public class MovementWindow {
 
             ImGuiHelper.combo("方向", direction, new String[]{
                 "水平",
-                "相机"
+                "摄像机"
             });
             boolean flightCameraDirection = direction[0] == 1;
             if (config.flightCameraDirection != flightCameraDirection) {

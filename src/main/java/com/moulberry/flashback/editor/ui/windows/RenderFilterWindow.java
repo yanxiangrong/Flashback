@@ -47,7 +47,7 @@ public class RenderFilterWindow {
         if (!wasDocked) {
             flags |= ImGuiWindowFlags.AlwaysAutoResize;
         }
-        if (ImGui.begin("渲染过滤器###渲染过滤器", open, flags)) {
+        if (ImGui.begin("渲染过滤器###Render Filter", open, flags)) {
             wasDocked = ImGui.isWindowDocked();
 
             FlashbackConfig config = Flashback.getConfig();
@@ -72,7 +72,7 @@ public class RenderFilterWindow {
                 return;
             }
 
-            if (ImGui.beginTabBar("##选择")) {
+            if (ImGui.beginTabBar("##Select")) {
                 if (ImGui.beginTabItem("实体")) {
                     ImGui.inputText("搜索", entitySearch);
                     String searchString = ImGuiHelper.getString(entitySearch).trim().toLowerCase(Locale.ROOT);
@@ -133,8 +133,8 @@ public class RenderFilterWindow {
 
                     ImGui.endTabItem();
                 }
-                if (ImGui.beginTabItem("Particles")) {
-                    ImGui.inputText("Search", particleSearch);
+                if (ImGui.beginTabItem("粒子")) {
+                    ImGui.inputText("搜索", particleSearch);
                     String searchString = ImGuiHelper.getString(particleSearch).trim().toLowerCase(Locale.ROOT);
                     if (!searchString.equals(lastParticleSearch)) {
                         lastParticleSearch = searchString;
@@ -166,7 +166,7 @@ public class RenderFilterWindow {
                     }
 
                     if (searchedParticleTypes.isEmpty()) {
-                        ImGui.text("No particles found");
+                        ImGui.text("未找到任何粒子");
                     } else {
                         if (ImGui.beginChild("##Scroller", 0, 300)) {
                             ImGuiListClipper.forEach(searchedParticleTypes.size(), new ImListClipperCallback() {
@@ -195,11 +195,11 @@ public class RenderFilterWindow {
                         }
                         ImGui.endChild();
 
-                        if (ImGui.smallButton("Enable All")) {
+                        if (ImGui.smallButton("启用所有")) {
                             editorState.filteredParticles.clear();
                         }
                         ImGui.sameLine();
-                        if (ImGui.smallButton("Disable All")) {
+                        if (ImGui.smallButton("禁用所有")) {
                             for (ParticleType<?> particleType : BuiltInRegistries.PARTICLE_TYPE) {
                                 ResourceLocation resourceLocation = BuiltInRegistries.PARTICLE_TYPE.getKey(particleType);
                                 if (resourceLocation == null) {
@@ -211,7 +211,7 @@ public class RenderFilterWindow {
                     }
 
                     ImGui.pushTextWrapPos(300);
-                    ImGui.textWrapped("Note: Due to technical limitations, will only prevent new particles from spawning. Existing particles won't be affected.");
+                    ImGui.textWrapped("注意：由于技术限制，只会阻止新粒子的产生。现有粒子不会受到影响。");
                     ImGui.popTextWrapPos();
 
                     ImGui.endTabItem();

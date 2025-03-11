@@ -29,7 +29,7 @@ public class MainMenuBar {
             }
             if (!ExportJobQueue.queuedJobs.isEmpty()) {
                 String name = "导出队列 (" + ExportJobQueue.count() + ")";
-                if (ImGui.menuItem(name + "###队列任务")) {
+                if (ImGui.menuItem(name + "###QueuedJobs")) {
                     ExportQueueWindow.open();
                 }
             }

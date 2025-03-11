@@ -27,10 +27,10 @@ public class ExportScreenshotWindow {
     public static void render() {
         if (open) {
             open = false;
-            ImGui.openPopup("###导出截图");
+            ImGui.openPopup("###ExportScreenshot");
         }
 
-        if (ImGuiHelper.beginPopupModalCloseable("导出截图###导出截图", ImGuiWindowFlags.AlwaysAutoResize)) {
+        if (ImGuiHelper.beginPopupModalCloseable("导出截图###ExportScreenshot", ImGuiWindowFlags.AlwaysAutoResize)) {
             if (close) {
                 close = false;
                 ImGui.closeCurrentPopup();

@@ -21,19 +21,19 @@ public class ExportQueueWindow {
 
     public static void render() {
         if (open) {
-            ImGui.openPopup("###导出队列");
+            ImGui.openPopup("###ExportQueue");
             open = false;
         }
 
-        if (ImGuiHelper.beginPopupModalCloseable("导出队列###导出队列", ImGuiWindowFlags.AlwaysAutoResize)) {
+        if (ImGuiHelper.beginPopupModalCloseable("导出队列###ExportQueue", ImGuiWindowFlags.AlwaysAutoResize)) {
             ImGuiHelper.pushStyleColor(ImGuiCol.Border, 0xFF808080);
 
             boolean canStartJob = !ExportJobQueue.queuedJobs.isEmpty() && Flashback.EXPORT_JOB == null;
             boolean canRemoveJob = !ExportJobQueue.queuedJobs.isEmpty();
 
             ImGui.text("任务");
-            if (ImGui.beginChild("##任务", 300, 150, true)) {
-                if (ImGui.beginTable("##任务表", 3, ImGuiTableFlags.SizingFixedFit)) {
+            if (ImGui.beginChild("##Jobs", 300, 150, true)) {
+                if (ImGui.beginTable("##JobTable", 3, ImGuiTableFlags.SizingFixedFit)) {
                     ImGui.tableSetupColumn("任务名", ImGuiTableColumnFlags.WidthStretch);
 
                     int startJob = -1;

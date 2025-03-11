@@ -132,7 +132,7 @@ public class StartExportWindow {
             open = false;
         }
 
-        if (ImGuiHelper.beginPopupModalCloseable("Export to video###StartExport", ImGuiWindowFlags.AlwaysAutoResize)) {
+        if (ImGuiHelper.beginPopupModalCloseable("导出到视频###StartExport", ImGuiWindowFlags.AlwaysAutoResize)) {
             if (close) {
                 close = false;
                 ImGui.closeCurrentPopup();
@@ -142,69 +142,69 @@ public class StartExportWindow {
 
             FlashbackConfig config = Flashback.getConfig();
 
-            ImGuiHelper.separatorWithText("Capture Options");
+            ImGuiHelper.separatorWithText("录制选项");
 
-            ImGuiHelper.inputInt("Resolution", config.resolution);
+            ImGuiHelper.inputInt("分辨率", config.resolution);
 
             if (config.resolution[0] < 16) config.resolution[0] = 16;
             if (config.resolution[1] < 16) config.resolution[1] = 16;
             if (config.resolution[0] % 2 != 0) config.resolution[0] += 1;
             if (config.resolution[1] % 2 != 0) config.resolution[1] += 1;
 
-            if (ImGuiHelper.inputInt("Start/end tick", startEndTick)) {
+            if (ImGuiHelper.inputInt("开始/结束 帧", startEndTick)) {
                 ReplayServer replayServer = Flashback.getReplayServer();
                 if (editorState != null && replayServer != null) {
                     editorState.currentScene().setExportTicks(startEndTick[0], startEndTick[1], replayServer.getTotalReplayTicks());
                     editorState.markDirty();
                 }
             }
-            ImGuiHelper.inputFloat("Framerate", config.framerate);
+            ImGuiHelper.inputFloat("帧率", config.framerate);
 
-            if (ImGui.checkbox("Reset RNG", config.resetRng)) {
+            if (ImGui.checkbox("重置 RNG", config.resetRng)) {
                 config.resetRng = !config.resetRng;
             }
-            ImGuiHelper.tooltip("Attempts to remove randomness from the replay in order to produce more consistent outputs when recording the same scene multiple times");
+            ImGuiHelper.tooltip("尝试消除重放中的随机性，以便在多次录制同一场景时产生更一致的输出");
 
             ImGui.sameLine();
 
-            if (ImGui.checkbox("SSAA", config.ssaa)) {
+            if (ImGui.checkbox("超级采样抗锯齿", config.ssaa)) {
                 config.ssaa = !config.ssaa;
             }
-            ImGuiHelper.tooltip("Supersampling Anti-Aliasing: Remove jagged edges by rendering the game at double resolution and downscaling");
+            ImGuiHelper.tooltip("超级采样抗锯齿：通过以双倍分辨率渲染游戏并缩小尺寸来消除锯齿边缘");
 
             ImGui.sameLine();
 
-            if (ImGui.checkbox("No GUI", config.noGui)) {
+            if (ImGui.checkbox("无 GUI", config.noGui)) {
                 config.noGui = !config.noGui;
             }
-            ImGuiHelper.tooltip("Removes all UI from the screen, rendering only the world");
+            ImGuiHelper.tooltip("删除屏幕上的所有 UI，仅渲染世界");
 
-            ImGuiHelper.separatorWithText("Video Options");
+            ImGuiHelper.separatorWithText("视频选项");
 
             renderVideoOptions(editorState, config);
 
             AudioCodec[] supportedAudioCodecs = config.container.getSupportedAudioCodecs();
             if (supportedAudioCodecs.length > 0) {
-                ImGuiHelper.separatorWithText("Audio Options");
+                ImGuiHelper.separatorWithText("音频选项");
 
-                if (ImGui.checkbox("Record Audio", config.recordAudio)) {
+                if (ImGui.checkbox("录制音频", config.recordAudio)) {
                     config.recordAudio = !config.recordAudio;
                 }
 
                 if (config.recordAudio) {
-                    if (ImGui.checkbox("Stereo (2 channel)", config.stereoAudio)) {
+                    if (ImGui.checkbox("立体声 (2 通道)", config.stereoAudio)) {
                         config.stereoAudio = !config.stereoAudio;
                     }
 
-                    AudioCodec newAudioCodec = ImGuiHelper.enumCombo("Audio Codec", config.audioCodec, supportedAudioCodecs);
+                    AudioCodec newAudioCodec = ImGuiHelper.enumCombo("音频编码器", config.audioCodec, supportedAudioCodecs);
                     if (newAudioCodec != config.audioCodec) {
                         config.audioCodec = newAudioCodec;
                     }
 
                     if (editorState != null && editorState.audioSourceEntity != null) {
-                        ImGui.text("Audio Source: \nEntity(" + editorState.audioSourceEntity + ")");
+                        ImGui.text("音频源: \n实体(" + editorState.audioSourceEntity + ")");
                     } else {
-                        ImGui.text("Audio Source: Camera");
+                        ImGui.text("音频源: 摄像机");
                     }
                 }
             } else {
@@ -212,9 +212,9 @@ public class StartExportWindow {
             }
 
             if (installedIncompatibleModsString != null) {
-                ImGuiHelper.separatorWithText("Incompatible Mods");
-                ImGui.textWrapped("You have some mods installed which are known to cause crashes/rendering issues.\n" +
-                    "If you encounter problems exporting, please try removing the following mods:");
+                ImGuiHelper.separatorWithText("不兼容的模组");
+                ImGui.textWrapped("您安装了一些已知会导致崩溃/渲染问题的模组。\n" +
+                    "如果您在导出时遇到问题，请尝试删除以下模块：");
                 ImGui.pushTextWrapPos();
                 ImGui.textColored(0xFF0000FF, installedIncompatibleModsString);
                 ImGui.popTextWrapPos();
@@ -223,7 +223,7 @@ public class StartExportWindow {
             ImGui.dummy(0, 10 * ReplayUI.getUiScale());
 
             float buttonSize = (ImGui.getContentRegionAvailX() - ImGui.getStyle().getItemSpacingX()) / 2f;
-            if (ImGui.button("Start Export", buttonSize, ReplayUI.scaleUi(25))) {
+            if (ImGui.button("开始导出", buttonSize, ReplayUI.scaleUi(25))) {
                 createExportSettings(null, config).thenAccept(settings -> {
                     if (settings != null) {
                         close = true;
@@ -234,16 +234,16 @@ public class StartExportWindow {
                 });
             }
             ImGui.sameLine();
-            if (ImGui.button("Add to Queue", buttonSize, ReplayUI.scaleUi(25))) {
-                jobName.set("Job #" + (ExportJobQueue.count()+1));
+            if (ImGui.button("添加到队列", buttonSize, ReplayUI.scaleUi(25))) {
+                jobName.set("任务 #" + (ExportJobQueue.count()+1));
                 ImGui.openPopup("QueuedJobName");
             }
 
             if (ImGui.beginPopup("QueuedJobName")) {
                 ImGui.setNextItemWidth(100);
-                ImGui.inputText("Job Name", jobName);
+                ImGui.inputText("任务名", jobName);
 
-                if (ImGui.button("Queue Job")) {
+                if (ImGui.button("队列任务")) {
                     createExportSettings(ImGuiHelper.getString(jobName), config).thenAccept(settings -> {
                         if (settings != null) {
                             close = true;
@@ -253,7 +253,7 @@ public class StartExportWindow {
                     });
                 }
                 ImGui.sameLine();
-                if (ImGui.button("Back")) {
+                if (ImGui.button("返回")) {
                     ImGui.closeCurrentPopup();
                 }
                 ImGui.endPopup();
@@ -267,7 +267,7 @@ public class StartExportWindow {
 
     private static void renderVideoOptions(EditorState editorState, FlashbackConfig config) {
         if (editorState != null && !editorState.replayVisuals.renderSky) {
-            if (ImGui.checkbox("Transparent Sky", config.transparentBackground)) {
+            if (ImGui.checkbox("透明的天空", config.transparentBackground)) {
                 config.transparentBackground = !config.transparentBackground;
             }
         } else {
@@ -288,7 +288,7 @@ public class StartExportWindow {
         }
 
         if (containers.length == 0) {
-            ImGui.text("No supported containers found");
+            ImGui.text("未找到受支持的容器格式");
             return;
         }
 
@@ -296,7 +296,7 @@ public class StartExportWindow {
             config.container = containers[0];
         }
 
-        config.container = ImGuiHelper.enumCombo("Container", config.container, containers);
+        config.container = ImGuiHelper.enumCombo("容器格式", config.container, containers);
 
         if (config.container == VideoContainer.PNG_SEQUENCE) {
             return;
@@ -305,7 +305,7 @@ public class StartExportWindow {
         VideoCodec[] codecs = config.container.getSupportedVideoCodecs(config.transparentBackground);
 
         if (codecs.length == 0) {
-            ImGui.text("No supported codecs found");
+            ImGui.text("未找到支持的编解码器");
             return;
         }
 
@@ -314,7 +314,7 @@ public class StartExportWindow {
         }
 
         if (codecs.length > 1) {
-            VideoCodec newCodec = ImGuiHelper.enumCombo("Codec", config.videoCodec, codecs);
+            VideoCodec newCodec = ImGuiHelper.enumCombo("编解码器", config.videoCodec, codecs);
             if (newCodec != config.videoCodec) {
                 config.videoCodec = newCodec;
                 config.selectedVideoEncoder[0] = 0;
@@ -323,15 +323,15 @@ public class StartExportWindow {
 
         String[] encoders = config.videoCodec.getEncoders();
         if (encoders.length > 1) {
-            ImGuiHelper.combo("Encoder", config.selectedVideoEncoder, encoders);
+            ImGuiHelper.combo("编码器", config.selectedVideoEncoder, encoders);
         }
 
         if (config.videoCodec != VideoCodec.GIF) {
-            if (ImGui.checkbox("Use Maximum Bitrate", config.useMaximumBitrate)) {
+            if (ImGui.checkbox("使用最大比特率", config.useMaximumBitrate)) {
                 config.useMaximumBitrate = !config.useMaximumBitrate;
             }
             if (!config.useMaximumBitrate) {
-                ImGui.inputText("Bitrate", bitrate);
+                ImGui.inputText("比特率", bitrate);
                 if (ImGui.isItemDeactivatedAfterEdit()) {
                     int numBitrate = stringToBitrate(ImGuiHelper.getString(bitrate));
                     bitrate.set(bitrateToString(numBitrate));
@@ -339,7 +339,7 @@ public class StartExportWindow {
             }
         } else {
             ImGui.pushTextWrapPos();
-            ImGui.textColored(0xFFFFFFFF, "Warning: GIF output can be extremely large. Please ensure you know the limitations of the GIF format before exporting. You might be better off using WebP which is a similar but better format");
+            ImGui.textColored(0xFFFFFFFF, "警告：GIF 输出可能非常大。请确保在导出之前了解 GIF 格式的限制。您最好使用 WebP，这是一种类似但更好的格式");
             ImGui.popTextWrapPos();
         }
     }

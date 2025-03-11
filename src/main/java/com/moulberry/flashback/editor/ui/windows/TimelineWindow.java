@@ -145,7 +145,7 @@ public class TimelineWindow {
         if (hoveredBody) {
             flags |= ImGuiWindowFlags.NoMove;
         }
-        boolean timelineVisible = ImGui.begin("Timeline (" + timestamp + "/" + cursorTicks + ")###Timeline", flags);
+        boolean timelineVisible = ImGui.begin("时间轴 (" + timestamp + "/" + cursorTicks + ")###Timeline", flags);
         ImGuiHelper.popStyleVar();
 
         cursorTicks = replayServer.getReplayTick();
@@ -266,8 +266,8 @@ public class TimelineWindow {
                     editorState.applyKeyframes(new MinecraftKeyframeHandler(Minecraft.getInstance()), cursorTicks);
                 }
                 if (!isCtrlDown && !isShiftDown) {
-                    ImGuiHelper.drawTooltip("Hold CTRL to apply keyframes");
-                    ImGuiHelper.drawTooltip("Hold SHIFT to snap to keyframes");
+                    ImGuiHelper.drawTooltip("按住 CTRL 键应用关键帧");
+                    ImGuiHelper.drawTooltip("按住 SHIFT 键可捕捉关键帧");
                 }
             }
 
@@ -440,19 +440,19 @@ public class TimelineWindow {
 
             if (!grabbedPlayback) {
                 if (hoveredSkipBackwards) {
-                    ImGuiHelper.drawTooltip("Skip backwards");
+                    ImGuiHelper.drawTooltip("后退");
                 } else if (hoveredSlowDown) {
-                    ImGuiHelper.drawTooltip("Slow down\n(Current speed: " + (currentTickRate/20f) + "x)");
+                    ImGuiHelper.drawTooltip("慢放\n(当前速度: " + (currentTickRate/20f) + "x)");
                 } else if (hoveredPause) {
                     if (replayServer.replayPaused) {
-                        ImGuiHelper.drawTooltip("Start replay");
+                        ImGuiHelper.drawTooltip("开始回放");
                     } else {
-                        ImGuiHelper.drawTooltip("Pause replay");
+                        ImGuiHelper.drawTooltip("暂停回放");
                     }
                 } else if (hoveredFastForwards) {
-                    ImGuiHelper.drawTooltip("Fast-forwards\n(Current speed: " + (currentTickRate/20f) + "x)");
+                    ImGuiHelper.drawTooltip("快进\n(当前速度: " + (currentTickRate/20f) + "x)");
                 } else if (hoveredSkipForwards) {
-                    ImGuiHelper.drawTooltip("Skip forwards");
+                    ImGuiHelper.drawTooltip("快进");
                 }
             }
 
@@ -762,7 +762,7 @@ public class TimelineWindow {
             String serialized = FlashbackGson.COMPRESSED.toJson(tracks);
             GLFW.glfwSetClipboardString(Minecraft.getInstance().getWindow().getWindow(), serialized);
 
-            ReplayUI.setInfoOverlay("Copied " + keyframeCount + " keyframe(s) to clipboard");
+            ReplayUI.setInfoOverlay("已复制 " + keyframeCount + " 帧到剪贴板");
         }
 
         if (pressedPaste) {
@@ -780,7 +780,7 @@ public class TimelineWindow {
                     }
 
                     if (count > 0) {
-                        ReplayUI.setInfoOverlay("Pasted " + count + " keyframe(s) from clipboard");
+                        ReplayUI.setInfoOverlay("从剪贴板粘贴 " + count + " 帧");
                         editorState.markDirty();
                     }
                 }
@@ -805,7 +805,7 @@ public class TimelineWindow {
         selectedKeyframesList.clear();
         editingKeyframeTrack = -1;
         editingKeyframeTick = -1;
-        editorScene.push(new EditorSceneHistoryEntry(undo, redo, "Deleted " + undo.size() + " keyframe(s)"));
+        editorScene.push(new EditorSceneHistoryEntry(undo, redo, "删除 " + undo.size() + " 帧"));
         editorState.markDirty();
     }
 
@@ -1067,7 +1067,7 @@ public class TimelineWindow {
             }
 
             if (modified > 0) {
-                editorScene.push(new EditorSceneHistoryEntry(undo, redo, "Modified " + modified + " keyframe(s)"));
+                editorScene.push(new EditorSceneHistoryEntry(undo, redo, "修改 " + modified + " 帧"));
                 editorState.markDirty();
             }
         });
@@ -1075,7 +1075,7 @@ public class TimelineWindow {
         if (editingKeyframe.keyframeType().allowChangingInterpolationType()) {
             int[] type = new int[]{editingKeyframe.interpolationType().ordinal()};
             ImGui.setNextItemWidth(160);
-            if (ImGuiHelper.combo("Type", type, InterpolationType.NAMES)) {
+            if (ImGuiHelper.combo("类型", type, InterpolationType.NAMES)) {
                 InterpolationType interpolationType = InterpolationType.INTERPOLATION_TYPES[type[0]];
 
                 List<EditorSceneHistoryAction> undo = new ArrayList<>();
@@ -1096,14 +1096,14 @@ public class TimelineWindow {
                     }
                 }
 
-                editorScene.push(new EditorSceneHistoryEntry(undo, redo, "Changed interpolation type to " + interpolationType));
+                editorScene.push(new EditorSceneHistoryEntry(undo, redo, "将插值类型更改为 " + interpolationType));
                 editorState.markDirty();
             }
         }
         if (editingKeyframe.keyframeType().allowChangingTimelineTick()) {
             int[] intWrapper = new int[]{editingKeyframeTick};
             ImGui.setNextItemWidth(160);
-            ImGuiHelper.inputInt("Tick", intWrapper);
+            ImGuiHelper.inputInt("帧", intWrapper);
             int newEditingKeyframeTick = intWrapper[0];
 
             if (ImGui.isItemDeactivatedAfterEdit() && newEditingKeyframeTick != editingKeyframeTick) {
@@ -1121,7 +1121,7 @@ public class TimelineWindow {
                             new EditorSceneHistoryAction.SetKeyframe(track.keyframeType, selectedKeyframes.trackIndex(), newEditingKeyframeTick, editingKeyframe.copy())
                         );
 
-                        editorScene.push(new EditorSceneHistoryEntry(undo, redo, "Moved 1 keyframe(s)"));
+                        editorScene.push(new EditorSceneHistoryEntry(undo, redo, "移动 1 帧"));
                         editorState.markDirty();
                         selectedKeyframes.keyframeTicks().remove(editingKeyframeTick);
                         selectedKeyframes.keyframeTicks().add(newEditingKeyframeTick);
@@ -1134,14 +1134,14 @@ public class TimelineWindow {
 
         boolean multiple = selectedKeyframesList.size() >= 2 || selectedKeyframesList.getFirst().keyframeTicks().size() >= 2;
 
-        if (ImGui.button(multiple ? "Remove All" : "Remove")) {
+        if (ImGui.button(multiple ? "移除所有" : "移除")) {
             ImGui.closeCurrentPopup();
             removeAllSelectedKeyframes();
         }
 
         if (!multiple && editingKeyframe instanceof CameraKeyframe cameraKeyframe) {
             ImGui.sameLine();
-            if (ImGui.button("Apply")) {
+            if (ImGui.button("应用")) {
                 cameraKeyframe.createChange().apply(new MinecraftKeyframeHandler(Minecraft.getInstance()));
             }
         }
@@ -1282,7 +1282,7 @@ public class TimelineWindow {
                     }
                 }
 
-                editorScene.push(new EditorSceneHistoryEntry(undo, redo, "Moved " + movedKeyframes + " keyframe(s)"));
+                editorScene.push(new EditorSceneHistoryEntry(undo, redo, "移动 " + movedKeyframes + " 帧"));
                 editorState.markDirty();
             }
 
@@ -1317,7 +1317,7 @@ public class TimelineWindow {
             }
 
             if (minTick == maxTick) {
-                ImGuiHelper.drawTooltip("Scale: 100%");
+                ImGuiHelper.drawTooltip("缩放: 100%");
             } else {
                 if (minTick == grabbedKeyframeTick || minTick == timelineXToReplayTick(grabbedKeyframeMouseX - x)) {
                     grabbedScalePivotTick = maxTick;
@@ -1332,7 +1332,7 @@ public class TimelineWindow {
                     grabbedScaleFactor = 1f;
                 }
 
-                ImGuiHelper.drawTooltip("Scale: " + Math.round(grabbedScaleFactor*100) + "%");
+                ImGuiHelper.drawTooltip("缩放: " + Math.round(grabbedScaleFactor*100) + "%");
             }
 
             return new GrabMovementInfo(0, grabbedScalePivotTick, grabbedScaleFactor);
@@ -1371,16 +1371,16 @@ public class TimelineWindow {
                 }
             }
 
-            String tooltip = "Tick: " + (grabbedKeyframeTick + grabbedDelta);
+            String tooltip = "帧: " + (grabbedKeyframeTick + grabbedDelta);
 
             if (grabbedDelta >= 0) {
-                tooltip += " (+" + grabbedDelta + " ticks)";
+                tooltip += " (+" + grabbedDelta + " 帧)";
             } else {
-                tooltip += " (" + grabbedDelta + " ticks)";
+                tooltip += " (" + grabbedDelta + " 帧)";
             }
 
             if (!isShiftDown && editorScene.keyframeTracks.size() > 1) {
-                tooltip += "\nHold SHIFT to snap";
+                tooltip += "\n按住 SHIFT 即可捕捉";
             }
 
             ImGuiHelper.drawTooltip(tooltip);
@@ -1453,7 +1453,7 @@ public class TimelineWindow {
                             colour = 0xFF155FFF;
 
                             if (Math.abs(mouseX - midX) < keyframeSize && Math.abs(mouseY - midY) < keyframeSize) {
-                                ImGuiHelper.drawTooltip("Timelapse requires two keyframes");
+                                ImGuiHelper.drawTooltip("延时摄影需要两个关键帧");
                             }
                         } else {
                             var floorEntry = keyframeTrack.keyframesByTick.floorEntry(tick - 1);
@@ -1462,7 +1462,7 @@ public class TimelineWindow {
                                     colour = 0xFF155FFF;
 
                                     if (Math.abs(mouseX - midX) < keyframeSize && Math.abs(mouseY - midY) < keyframeSize) {
-                                        ImGuiHelper.drawTooltip("This keyframe's Time must be greater than the Time on the left.\nThe left keyframe must be set to the base time, e.g. 0s and the right keyframe must be set to the duration of the timelapse e.g. 10s");
+                                        ImGuiHelper.drawTooltip("此关键帧的时间必须大于左侧的时间。\n左侧关键帧必须设置为基准时间，例如 0 秒，右侧关键帧必须设置为延时拍摄的持续时间，例如 10 秒");
                                     }
                                 }
                             }
@@ -1489,7 +1489,7 @@ public class TimelineWindow {
                         String message;
                         int textColour = -1;
                         if (tickDelta <= 0) {
-                            message = "INVALID";
+                            message = "无效的";
                             textColour = 0xFF155FFF;
                         } else {
                             message = Utils.timeToString(tickDelta);
@@ -1498,10 +1498,10 @@ public class TimelineWindow {
                         float textY = midY - lineHeight*0.3f;
                         float midX = (leftX + rightX)/2f;
 
-                        float textWidth = ImGuiHelper.calcTextWidth("Duration: " + message);
+                        float textWidth = ImGuiHelper.calcTextWidth("持续时间: " + message);
                         if (textWidth <= rightX - leftX) {
                             ImGui.getWindowDrawList().addText(x + midX - textWidth/2, textY,
-                                textColour, "Duration: " + message);
+                                textColour, "持续时间: " + message);
                         } else {
                             textWidth = ImGuiHelper.calcTextWidth(message);
                             if (textWidth <= rightX - leftX) {
@@ -1602,7 +1602,7 @@ public class TimelineWindow {
             }
 
             if (ImGui.beginPopup("##CreateKeyframeAtTickPopup")) {
-                if (ImGui.menuItem("Create Keyframe at " + createKeyframeAtTick)) {
+                if (ImGui.menuItem("在 " + createKeyframeAtTick + " 创建关键帧")) {
                     ImGui.closeCurrentPopup();
                     ImGui.endPopup();
 
@@ -1703,7 +1703,7 @@ public class TimelineWindow {
                 ImGui.openPopup("##TrackPopup");
             }
             drawList.addText(buttonX - 2, buttonY, -1, "\ue5d2");
-            ImGuiHelper.tooltip("Open track options");
+            ImGuiHelper.tooltip("打开轨道选项");
 
             ImGui.sameLine();
 
@@ -1721,10 +1721,10 @@ public class TimelineWindow {
             }
             if (keyframeTrack.enabled) {
                 drawList.addText(buttonX - 2, buttonY, -1, "\ue8f4");
-                ImGuiHelper.tooltip("Disable keyframe track");
+                ImGuiHelper.tooltip("禁用关键帧轨道");
             } else {
                 drawList.addText(buttonX - 2, buttonY, -1, "\ue8f5");
-                ImGuiHelper.tooltip("Enable keyframe track");
+                ImGuiHelper.tooltip("启用关键帧轨道");
             }
             ImGui.sameLine();
 
@@ -1734,12 +1734,12 @@ public class TimelineWindow {
                 createNewKeyframe(trackIndex, cursorTicks, keyframeType, keyframeTrack);
 
                 if (keyframeType instanceof CameraKeyframeType && Minecraft.getInstance().player != Minecraft.getInstance().cameraEntity) {
-                    ReplayUI.setInfoOverlay("Warning: Don't use Camera keyframes for spectating a player");
+                    ReplayUI.setInfoOverlay("警告：不要使用摄像机关键帧来观看玩家");
                     Minecraft.getInstance().getConnection().sendUnsignedCommand("spectate");
                 }
             }
             drawList.addText(buttonX - 2, buttonY, -1, "\ue148");
-            ImGuiHelper.tooltip("Add keyframe");
+            ImGuiHelper.tooltip("添加关键帧");
 
             if (ImGui.beginPopup("##CreateKeyframe")) {
                 if (createKeyframeWithPopup != null) {
@@ -1759,17 +1759,17 @@ public class TimelineWindow {
             boolean openTrackColourPopup = false;
 
             if (ImGui.beginPopup("##TrackPopup")) {
-                if (ImGui.menuItem("\ue3c9 Rename")) {
+                if (ImGui.menuItem("\ue3c9 重命名")) {
                     keyframeTrack.nameEditField = ImGuiHelper.createResizableImString(name);
                     keyframeTrack.forceFocusTrack = true;
                 }
-                if (ImGui.menuItem("\ue40a Set Colour")) {
+                if (ImGui.menuItem("\ue40a 设置颜色")) {
                     openTrackColourPopup = true;
                 }
-                if (ImGui.menuItem("\ue872 Delete track")) {
+                if (ImGui.menuItem("\ue872 删除轨道")) {
                     keyframeTrackToDelete = trackIndex;
                 }
-                if (ImGui.menuItem("\ue14a Clear Keyframes")) {
+                if (ImGui.menuItem("\ue14a 清除关键帧")) {
                     keyframeTrackToClear = trackIndex;
                 }
                 ImGui.endPopup();
@@ -1779,7 +1779,7 @@ public class TimelineWindow {
                 ImGui.openPopup("##SetTrackColour");
             }
             if (ImGui.beginPopup("##SetTrackColour")) {
-                if (ImGui.button("Reset to Default")) {
+                if (ImGui.button("重置为默认值")) {
                     keyframeTrack.customColour = 0;
                     ImGui.closeCurrentPopup();
                 } else {
@@ -1790,7 +1790,7 @@ public class TimelineWindow {
                     ImVec4 imVec4 = new ImVec4();
                     ImGui.colorConvertU32ToFloat4(colour, imVec4);
                     float[] colourArray = new float[]{imVec4.x, imVec4.y, imVec4.z};
-                    if (ImGui.colorPicker3("Track Colour", colourArray)) {
+                    if (ImGui.colorPicker3("轨道颜色", colourArray)) {
                         keyframeTrack.customColour = ImGui.colorConvertFloat4ToU32(colourArray[0], colourArray[1], colourArray[2], 1.0f);
                     }
                 }
@@ -1823,7 +1823,7 @@ public class TimelineWindow {
 
             redo.add(new EditorSceneHistoryAction.RemoveTrack(keyframeTrack.keyframeType, keyframeTrackToDelete));
 
-            editorScene.push(new EditorSceneHistoryEntry(undo, redo, "Delete " + keyframeTrack.keyframeType.name() + " track"));
+            editorScene.push(new EditorSceneHistoryEntry(undo, redo, "删除 " + keyframeTrack.keyframeType.name() + " 轨道"));
             editorState.markDirty();
             selectedKeyframesList.clear();
         } else if (keyframeTrackToClear >= 0) {
@@ -1837,13 +1837,13 @@ public class TimelineWindow {
                 redo.add(new EditorSceneHistoryAction.RemoveKeyframe(keyframeTrack.keyframeType, keyframeTrackToClear, entry.getKey()));
             }
 
-            editorScene.push(new EditorSceneHistoryEntry(undo, redo, "Clear " + keyframeTrack.keyframeType.name() + " track"));
+            editorScene.push(new EditorSceneHistoryEntry(undo, redo, "清除 " + keyframeTrack.keyframeType.name() + " 轨道"));
             editorState.markDirty();
             selectedKeyframesList.clear();
         }
 
         ImGui.setCursorPosX(8);
-        if (ImGui.smallButton("Add Element")) {
+        if (ImGui.smallButton("添加元素")) {
             ImGui.openPopup("##AddKeyframeElement");
         }
 
@@ -1856,13 +1856,13 @@ public class TimelineWindow {
         ImGui.setNextItemWidth(middleX - ImGui.getCursorPosX() - spacingX);
         ImGui.pushStyleVar(ImGuiStyleVar.FramePadding, 4, 0);
         if (ImGui.beginCombo("##SceneSwitcher", editorScene.name, ImGuiComboFlags.HeightLargest)) {
-            if (ImGui.menuItem("\ue148 New Scene")) {
+            if (ImGui.menuItem("\ue148 新场景")) {
                 openNewScenePopup = true;
             }
-            if (ImGui.menuItem("\ue3c9 Rename")) {
+            if (ImGui.menuItem("\ue3c9 重命名")) {
                 openRenameScenePopup = true;
             }
-            if (editorState.scenes.size() > 1 && editorScene.keyframeTracks.isEmpty() && ImGui.menuItem("\ue92b Delete Forever")) {
+            if (editorState.scenes.size() > 1 && editorScene.keyframeTracks.isEmpty() && ImGui.menuItem("\ue92b 永久删除")) {
                 openDeleteScenePopup = true;
             }
 
@@ -1889,12 +1889,12 @@ public class TimelineWindow {
 
         if (openNewScenePopup) {
             ImGui.openPopup("##NewScene");
-            sceneNameString = ImGuiHelper.createResizableImString("Scene " + (editorState.scenes.size() + 1));
+            sceneNameString = ImGuiHelper.createResizableImString("场景 " + (editorState.scenes.size() + 1));
         }
         if (ImGui.beginPopup("##NewScene")) {
-            ImGui.inputText("Name", sceneNameString);
+            ImGui.inputText("名字", sceneNameString);
 
-            if (ImGui.button("Create")) {
+            if (ImGui.button("创建")) {
                 String sceneName = ImGuiHelper.getString(sceneNameString).trim();
                 if (!sceneName.isEmpty()) {
                     editorState.scenes.add(new EditorScene(sceneName));
@@ -1904,7 +1904,7 @@ public class TimelineWindow {
                 }
             }
             ImGui.sameLine();
-            if (ImGui.button("Cancel")) {
+            if (ImGui.button("取消")) {
                 ImGui.closeCurrentPopup();
             }
 
@@ -1916,9 +1916,9 @@ public class TimelineWindow {
             sceneNameString = ImGuiHelper.createResizableImString(editorScene.name);
         }
         if (ImGui.beginPopup("##RenameScene")) {
-            ImGui.inputText("Name", sceneNameString);
+            ImGui.inputText("名字", sceneNameString);
 
-            if (ImGui.button("Rename")) {
+            if (ImGui.button("重命名")) {
                 String sceneName = ImGuiHelper.getString(sceneNameString).trim();
                 if (!sceneName.isEmpty()) {
                     editorScene.name = sceneName;
@@ -1927,7 +1927,7 @@ public class TimelineWindow {
                 }
             }
             ImGui.sameLine();
-            if (ImGui.button("Cancel")) {
+            if (ImGui.button("取消")) {
                 ImGui.closeCurrentPopup();
             }
 
@@ -1939,11 +1939,11 @@ public class TimelineWindow {
         }
         if (ImGui.beginPopup("##DeleteScene")) {
             if (editorState.scenes.size() > 1 && editorScene.keyframeTracks.isEmpty()) {
-                ImGui.text("Are you sure you want to delete this scene?");
-                ImGui.text("This action is PERMANENT");
-                ImGui.text("You will not be able to undo this action");
+                ImGui.text("您确定要删除该场景吗？");
+                ImGui.text("此操作是——永久性——的");
+                ImGui.text("您将无法撤消此操作");
 
-                if (ImGui.button("Delete Forever")) {
+                if (ImGui.button("永久删除")) {
                     editorState.scenes.remove(editorState.sceneIndex);
                     if (editorState.sceneIndex >= editorState.scenes.size()) {
                         editorState.sceneIndex = editorState.scenes.size() - 1;
@@ -1951,7 +1951,7 @@ public class TimelineWindow {
                     ImGui.closeCurrentPopup();
                 }
                 ImGui.sameLine();
-                if (ImGui.button("Cancel")) {
+                if (ImGui.button("取消")) {
                     ImGui.closeCurrentPopup();
                 }
             } else {
@@ -1971,7 +1971,7 @@ public class TimelineWindow {
                     undo.add(new EditorSceneHistoryAction.RemoveTrack(type, index));
                     redo.add(new EditorSceneHistoryAction.AddTrack(type, index));
 
-                    editorScene.push(new EditorSceneHistoryEntry(undo, redo, "Create " + type.name() + " track"));
+                    editorScene.push(new EditorSceneHistoryEntry(undo, redo, "创建 " + type.name() + " 轨道"));
                     editorState.markDirty();
                     ImGui.closeCurrentPopup();
                 }

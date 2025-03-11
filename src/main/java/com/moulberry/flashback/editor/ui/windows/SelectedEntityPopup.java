@@ -51,29 +51,29 @@ public class SelectedEntityPopup {
 
     public static void render(Entity entity, EditorState editorState) {
         UUID uuid = entity.getUUID();
-        ImGui.text("Entity: " + uuid);
+        ImGui.text("实体: " + uuid);
 
         ImGui.separator();
 
-        if (ImGui.button("Look At")) {
+        if (ImGui.button("查看")) {
             Minecraft.getInstance().cameraEntity.lookAt(EntityAnchorArgument.Anchor.EYES, entity.getEyePosition());
         }
         ImGui.sameLine();
-        if (ImGui.button("Spectate")) {
+        if (ImGui.button("观看")) {
             Minecraft.getInstance().player.connection.sendUnsignedCommand("spectate " + entity.getUUID());
             ImGui.closeCurrentPopup();
         }
         if (uuid.equals(editorState.audioSourceEntity)) {
-            if (ImGui.button("Unset Audio Source")) {
+            if (ImGui.button("取消设置音频源")) {
                 editorState.audioSourceEntity = null;
                 editorState.markDirty();
             }
-        } else if (ImGui.button("Set Audio Source")) {
+        } else if (ImGui.button("设置音频源")) {
             editorState.audioSourceEntity = entity.getUUID();
             editorState.markDirty();
         }
         boolean isHiddenDuringExport = editorState.hideDuringExport.contains(entity.getUUID());
-        if (ImGui.checkbox("Hide During Export", isHiddenDuringExport)) {
+        if (ImGui.checkbox("导出时隐藏", isHiddenDuringExport)) {
             if (isHiddenDuringExport) {
                 editorState.hideDuringExport.remove(entity.getUUID());
             } else {
@@ -84,7 +84,7 @@ public class SelectedEntityPopup {
 
         if (!isHiddenDuringExport && entity instanceof Player player) {
             boolean hideNametag = editorState.hideNametags.contains(entity.getUUID());
-            if (ImGui.checkbox("Render Nametag", !hideNametag)) {
+            if (ImGui.checkbox("渲染名牌", !hideNametag)) {
                 if (hideNametag) {
                     editorState.hideNametags.remove(entity.getUUID());
                 } else {
@@ -93,7 +93,7 @@ public class SelectedEntityPopup {
             }
 
             if (!hideNametag) {
-                boolean changedName = ImGui.inputTextWithHint("Name##SetNameInput", player.getScoreboardName(), changeNameInput);
+                boolean changedName = ImGui.inputTextWithHint("名字##SetNameInput", player.getScoreboardName(), changeNameInput);
 
                 if (changedName) {
                     String string = ImGuiHelper.getString(changeNameInput);
@@ -105,33 +105,33 @@ public class SelectedEntityPopup {
                 }
 
                 if (editorState.hideTeamPrefix.contains(player.getUUID())) {
-                    if (ImGui.checkbox("Hide Team Prefix", true)) {
+                    if (ImGui.checkbox("隐藏队伍前缀", true)) {
                         editorState.hideTeamPrefix.remove(player.getUUID());
                     }
                 } else {
                     PlayerTeam team = player.getTeam();
                     if (team != null && !Utils.isComponentEmpty(team.getPlayerPrefix())) {
-                        if (ImGui.checkbox("Hide Team Prefix", false)) {
+                        if (ImGui.checkbox("隐藏队伍前缀", false)) {
                             editorState.hideTeamPrefix.add(player.getUUID());
                         }
                     }
                 }
 
                 if (editorState.hideTeamSuffix.contains(player.getUUID())) {
-                    if (ImGui.checkbox("Hide Team Suffix", true)) {
+                    if (ImGui.checkbox("隐藏队伍后缀", true)) {
                         editorState.hideTeamSuffix.remove(player.getUUID());
                     }
                 } else {
                     PlayerTeam team = player.getTeam();
                     if (team != null && !Utils.isComponentEmpty(team.getPlayerSuffix())) {
-                        if (ImGui.checkbox("Hide Team Suffix", false)) {
+                        if (ImGui.checkbox("隐藏队伍后缀", false)) {
                             editorState.hideTeamSuffix.add(player.getUUID());
                         }
                     }
                 }
             }
 
-            ImGuiHelper.separatorWithText("Change Skin & Cape (UUID)");
+            ImGuiHelper.separatorWithText("更换皮肤和披风 (UUID)");
             ImGui.setNextItemWidth(320);
             ImGui.inputTextWithHint("##SetSkinInput", "e.g. d0e05de7-6067-454d-beae-c6d19d886191", changeSkinInput);
 
@@ -139,7 +139,7 @@ public class SelectedEntityPopup {
                 String string = ImGuiHelper.getString(changeSkinInput);
                 try {
                     UUID changeSkinUuid = UUID.fromString(string);
-                    if (ImGui.button("Apply Skin from UUID")) {
+                    if (ImGui.button("通过 UUID 应用皮肤")) {
                         ProfileResult profile = Minecraft.getInstance().getMinecraftSessionService().fetchProfile(changeSkinUuid, true);
                         editorState.skinOverride.put(entity.getUUID(), profile.profile());
                         editorState.skinOverrideFromFile.remove(entity.getUUID());
@@ -147,10 +147,10 @@ public class SelectedEntityPopup {
                 } catch (Exception ignored) {}
             }
 
-            if (ImGui.button("Upload Skin from File")) {
+            if (ImGui.button("从文件上传皮肤")) {
                 Path gameDir = FabricLoader.getInstance().getGameDir();
                 CompletableFuture<String> future = AsyncFileDialogs.openFileDialog(gameDir.toString(),
-                    "Skin Texture", "png");
+                    "皮肤", "png");
                 future.thenAccept(pathStr -> {
                     if (pathStr != null) {
                         editorState.skinOverride.remove(entity.getUUID());
@@ -160,7 +160,7 @@ public class SelectedEntityPopup {
             }
 
             if (editorState.skinOverride.containsKey(entity.getUUID()) || editorState.skinOverrideFromFile.containsKey(entity.getUUID())) {
-                if (ImGui.button("Reset Skin")) {
+                if (ImGui.button("重置皮肤")) {
                     editorState.skinOverride.remove(entity.getUUID());
                     editorState.skinOverrideFromFile.remove(entity.getUUID());
                     changeSkinInput.set("");

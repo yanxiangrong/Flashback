@@ -23,8 +23,8 @@ public class ExportDoneWindow {
         ImGui.setNextWindowSizeConstraints(250, 50, 5000, 5000);
         int flags = ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoDocking | ImGuiWindowFlags.NoSavedSettings;
 
-        ImGui.openPopup("###导出完成");
-        if (ImGui.beginPopupModal("导出完成###导出完成", open, flags)) {
+        ImGui.openPopup("###ExportDone");
+        if (ImGui.beginPopupModal("导出完成###ExportDone", open, flags)) {
             ImGui.text("导出成功完成");
             ImGui.endPopup();
         }

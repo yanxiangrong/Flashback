@@ -324,7 +324,7 @@ public final class CustomImGuiImplGl3 {
         glLinkProgram(this.gShaderHandle);
 
         if (glGetProgrami(this.gShaderHandle, GL_LINK_STATUS) == GL_FALSE) {
-            throw new IllegalStateException("Failed to link shader program:\n" + glGetProgramInfoLog(this.gShaderHandle));
+            throw new IllegalStateException("无法链接着色器程序:\n" + glGetProgramInfoLog(this.gShaderHandle));
         }
     }
 
@@ -335,7 +335,7 @@ public final class CustomImGuiImplGl3 {
         if (m.find()) {
             return Integer.parseInt(m.group());
         } else {
-            throw new IllegalArgumentException("Invalid GLSL version string: " + this.glslVersion);
+            throw new IllegalArgumentException("GLSL 版本字符串无效: " + this.glslVersion);
         }
     }
 
@@ -468,7 +468,7 @@ public final class CustomImGuiImplGl3 {
         glCompileShader(id);
 
         if (glGetShaderi(id, GL_COMPILE_STATUS) == GL_FALSE) {
-            throw new IllegalStateException("Failed to compile shader:\n" + glGetShaderInfoLog(id));
+            throw new IllegalStateException("无法编译着色器:\n" + glGetShaderInfoLog(id));
         }
 
         return id;

@@ -37,122 +37,122 @@ public class VisualsWindow {
         EditorState editorState = EditorStateManager.get(metadata.replayIdentifier);
         ReplayVisuals visuals = editorState.replayVisuals;
 
-        if (ImGui.begin("Visuals")) {
+        if (ImGui.begin("视觉效果")) {
             ImGuiHelper.separatorWithText("GUI");
 
-            if (ImGui.checkbox("Chat", visuals.showChat)) {
+            if (ImGui.checkbox("聊天", visuals.showChat)) {
                 visuals.showChat = !visuals.showChat;
                 editorState.markDirty();
             }
-            if (ImGui.checkbox("Boss Bar", visuals.showBossBar)) {
+            if (ImGui.checkbox("Boss 血条", visuals.showBossBar)) {
                 visuals.showBossBar = !visuals.showBossBar;
                 editorState.markDirty();
             }
-            if (ImGui.checkbox("Title Text", visuals.showTitleText)) {
+            if (ImGui.checkbox("标题文本", visuals.showTitleText)) {
                 visuals.showTitleText = !visuals.showTitleText;
                 editorState.markDirty();
             }
-            if (ImGui.checkbox("Scoreboard", visuals.showScoreboard)) {
+            if (ImGui.checkbox("记分牌", visuals.showScoreboard)) {
                 visuals.showScoreboard = !visuals.showScoreboard;
                 editorState.markDirty();
             }
-            if (ImGui.checkbox("Action Bar", visuals.showActionBar)) {
+            if (ImGui.checkbox("物品栏", visuals.showActionBar)) {
                 visuals.showActionBar = !visuals.showActionBar;
                 editorState.markDirty();
             }
 
             if (Minecraft.getInstance().cameraEntity != null && Minecraft.getInstance().cameraEntity != Minecraft.getInstance().player) {
-                if (ImGui.checkbox("Hotbar", visuals.showHotbar)) {
+                if (ImGui.checkbox("快捷栏", visuals.showHotbar)) {
                     visuals.showHotbar = !visuals.showHotbar;
                     editorState.markDirty();
                 }
             }
 
-            ImGuiHelper.separatorWithText("World");
+            ImGuiHelper.separatorWithText("世界");
 
-            if (ImGui.checkbox("Render Blocks", visuals.renderBlocks)) {
+            if (ImGui.checkbox("渲染方块", visuals.renderBlocks)) {
                 visuals.renderBlocks = !visuals.renderBlocks;
                 editorState.markDirty();
             }
 
-            if (ImGui.checkbox("Render Entities", visuals.renderEntities)) {
+            if (ImGui.checkbox("渲染实体", visuals.renderEntities)) {
                 visuals.renderEntities = !visuals.renderEntities;
                 editorState.markDirty();
             }
 
-            if (ImGui.checkbox("Render Players", visuals.renderPlayers)) {
+            if (ImGui.checkbox("渲染玩家", visuals.renderPlayers)) {
                 visuals.renderPlayers = !visuals.renderPlayers;
                 editorState.markDirty();
             }
 
-            if (ImGui.checkbox("Render Particles", visuals.renderParticles)) {
+            if (ImGui.checkbox("渲染粒子", visuals.renderParticles)) {
                 visuals.renderParticles = !visuals.renderParticles;
                 editorState.markDirty();
             }
 
-            if (ImGui.checkbox("Render Sky", visuals.renderSky)) {
+            if (ImGui.checkbox("渲染天空", visuals.renderSky)) {
                 visuals.renderSky = !visuals.renderSky;
                 editorState.markDirty();
             }
 
             if (!visuals.renderSky) {
-                if (ImGui.colorButton("Sky Colour", visuals.skyColour)) {
+                if (ImGui.colorButton("天空颜色", visuals.skyColour)) {
                     ImGui.openPopup("##EditSkyColour");
                 }
                 ImGui.sameLine();
-                ImGui.text("Sky Colour");
+                ImGui.text("天空颜色");
 
                 if (ImGui.beginPopup("##EditSkyColour")) {
-                    ImGui.colorPicker3("Sky Colour", visuals.skyColour);
+                    ImGui.colorPicker3("天空颜色", visuals.skyColour);
                     ImGui.endPopup();
                 }
             }
 
-            if (ImGui.checkbox("Render Nametags", visuals.renderNametags)) {
+            if (ImGui.checkbox("渲染名牌", visuals.renderNametags)) {
                 visuals.renderNametags = !visuals.renderNametags;
                 editorState.markDirty();
             }
 
-            ImGuiHelper.separatorWithText("Overrides");
+            ImGuiHelper.separatorWithText("覆写设置");
 
             // Fog distance
-            if (ImGui.checkbox("Override Fog", visuals.overrideFog)) {
+            if (ImGui.checkbox("覆写雾", visuals.overrideFog)) {
                 visuals.overrideFog = !visuals.overrideFog;
                 editorState.markDirty();
             }
             if (visuals.overrideFog) {
                 floatBuffer[0] = visuals.overrideFogStart;
-                if (ImGui.sliderFloat("Start", floatBuffer, 0.0f, 512.0f)) {
+                if (ImGui.sliderFloat("开始", floatBuffer, 0.0f, 512.0f)) {
                     visuals.overrideFogStart = floatBuffer[0];
                     editorState.markDirty();
                 }
 
                 floatBuffer[0] = visuals.overrideFogEnd;
-                if (ImGui.sliderFloat("End", floatBuffer, 0.0f, 512.0f)) {
+                if (ImGui.sliderFloat("结束", floatBuffer, 0.0f, 512.0f)) {
                     visuals.overrideFogEnd = floatBuffer[0];
                     editorState.markDirty();
                 }
             }
 
-            if (ImGui.checkbox("Override Fog Colour", visuals.overrideFogColour)) {
+            if (ImGui.checkbox("覆写雾颜色", visuals.overrideFogColour)) {
                 visuals.overrideFogColour = !visuals.overrideFogColour;
                 editorState.markDirty();
             }
             if (visuals.overrideFogColour) {
-                if (ImGui.colorButton("Fog Colour", visuals.fogColour)) {
+                if (ImGui.colorButton("雾颜色", visuals.fogColour)) {
                     ImGui.openPopup("##EditFogColour");
                 }
                 ImGui.sameLine();
-                ImGui.text("Fog Colour");
+                ImGui.text("雾颜色");
 
                 if (ImGui.beginPopup("##EditFogColour")) {
-                    ImGui.colorPicker3("Fog Colour", visuals.fogColour);
+                    ImGui.colorPicker3("雾颜色", visuals.fogColour);
                     ImGui.endPopup();
                 }
             }
 
             // FOV
-            if (ImGui.checkbox("Override FOV", visuals.overrideFov)) {
+            if (ImGui.checkbox("覆写视野", visuals.overrideFov)) {
                 visuals.overrideFov = !visuals.overrideFov;
                 Minecraft.getInstance().levelRenderer.needsUpdate();
                 editorState.markDirty();
@@ -162,17 +162,17 @@ public class VisualsWindow {
                 if (ImGui.smallButton("+")) {
                     addKeyframe(editorState, replayServer, new FOVKeyframe(visuals.overrideFovAmount));
                 }
-                ImGuiHelper.tooltip("Add FOV keyframe");
+                ImGuiHelper.tooltip("添加视野关键帧");
 
                 floatBuffer[0] = visuals.overrideFovAmount;
-                if (ImGui.sliderFloat("FOV", floatBuffer, 1.0f, 110.0f, "%.1f")) {
+                if (ImGui.sliderFloat("视野", floatBuffer, 1.0f, 110.0f, "%.1f")) {
                     visuals.setFov(floatBuffer[0]);
                     editorState.markDirty();
                 }
             }
 
             // Time
-            if (ImGui.checkbox("Override Time", visuals.overrideTimeOfDay >= 0)) {
+            if (ImGui.checkbox("覆写世界时间", visuals.overrideTimeOfDay >= 0)) {
                 if (visuals.overrideTimeOfDay >= 0) {
                     visuals.overrideTimeOfDay = -1;
                 } else {
@@ -185,22 +185,22 @@ public class VisualsWindow {
                 if (ImGui.smallButton("+")) {
                     addKeyframe(editorState, replayServer, new TimeOfDayKeyframe((int) visuals.overrideTimeOfDay));
                 }
-                ImGuiHelper.tooltip("Add Time keyframe");
+                ImGuiHelper.tooltip("添加世界时间关键帧");
 
                 intBuffer[0] = (int) visuals.overrideTimeOfDay;
-                if (ImGui.sliderInt("Time", intBuffer, 0, 24000)) {
+                if (ImGui.sliderInt("世界时间", intBuffer, 0, 24000)) {
                     visuals.overrideTimeOfDay = intBuffer[0];
                     editorState.markDirty();
                 }
             }
 
             // Night vision
-            if (ImGui.checkbox("Night Vision", visuals.overrideNightVision)) {
+            if (ImGui.checkbox("夜视", visuals.overrideNightVision)) {
                 visuals.overrideNightVision = !visuals.overrideNightVision;
             }
 
             // Camera shake
-            if (ImGui.checkbox("Camera Shake", visuals.overrideCameraShake)) {
+            if (ImGui.checkbox("摄像机抖动", visuals.overrideCameraShake)) {
                 visuals.overrideCameraShake = !visuals.overrideCameraShake;
                 editorState.markDirty();
             }
@@ -216,9 +216,9 @@ public class VisualsWindow {
                         addKeyframe(editorState, replayServer, new CameraShakeKeyframe(frequency, amplitude, frequency, amplitude, false));
                     }
                 }
-                ImGuiHelper.tooltip("Add Camera Shake keyframe");
+                ImGuiHelper.tooltip("添加摄像机抖动关键帧");
 
-                if (ImGui.checkbox("Split Y/X", visuals.cameraShakeSplitParams)) {
+                if (ImGui.checkbox("分离 Y/X", visuals.cameraShakeSplitParams)) {
                     visuals.cameraShakeSplitParams = !visuals.cameraShakeSplitParams;
                     editorState.markDirty();
                 }
@@ -226,35 +226,35 @@ public class VisualsWindow {
                 if (visuals.cameraShakeSplitParams) {
                     ImGui.setNextItemWidth(100);
                     floatBuffer[0] = visuals.cameraShakeXFrequency;
-                    if (ImGui.sliderFloat("Frequency X", floatBuffer, 0.1f, 10.0f, "%.1f")) {
+                    if (ImGui.sliderFloat("频率 X", floatBuffer, 0.1f, 10.0f, "%.1f")) {
                         visuals.cameraShakeXFrequency = floatBuffer[0];
                         editorState.markDirty();
                     }
 
                     ImGui.setNextItemWidth(100);
                     floatBuffer[0] = visuals.cameraShakeXAmplitude;
-                    if (ImGui.sliderFloat("Amplitude X", floatBuffer, 0.0f, 10.0f, "%.1f")) {
+                    if (ImGui.sliderFloat("幅度 X", floatBuffer, 0.0f, 10.0f, "%.1f")) {
                         visuals.cameraShakeXAmplitude = floatBuffer[0];
                         editorState.markDirty();
                     }
 
                     ImGui.setNextItemWidth(100);
                     floatBuffer[0] = visuals.cameraShakeYFrequency;
-                    if (ImGui.sliderFloat("Frequency Y", floatBuffer, 0.1f, 10.0f, "%.1f")) {
+                    if (ImGui.sliderFloat("频率 Y", floatBuffer, 0.1f, 10.0f, "%.1f")) {
                         visuals.cameraShakeYFrequency = floatBuffer[0];
                         editorState.markDirty();
                     }
 
                     ImGui.setNextItemWidth(100);
                     floatBuffer[0] = visuals.cameraShakeYAmplitude;
-                    if (ImGui.sliderFloat("Amplitude Y", floatBuffer, 0.0f, 10.0f, "%.1f")) {
+                    if (ImGui.sliderFloat("幅度 Y", floatBuffer, 0.0f, 10.0f, "%.1f")) {
                         visuals.cameraShakeYAmplitude = floatBuffer[0];
                         editorState.markDirty();
                     }
                 } else {
                     ImGui.setNextItemWidth(100);
                     floatBuffer[0] = (visuals.cameraShakeXFrequency + visuals.cameraShakeYFrequency)/2.0f;
-                    if (ImGui.sliderFloat("Frequency", floatBuffer, 0.1f, 10.0f, "%.1f")) {
+                    if (ImGui.sliderFloat("频率", floatBuffer, 0.1f, 10.0f, "%.1f")) {
                         visuals.cameraShakeXFrequency = floatBuffer[0];
                         visuals.cameraShakeYFrequency = floatBuffer[0];
                         editorState.markDirty();
@@ -262,7 +262,7 @@ public class VisualsWindow {
 
                     ImGui.setNextItemWidth(100);
                     floatBuffer[0] = (visuals.cameraShakeXAmplitude + visuals.cameraShakeYAmplitude)/2.0f;
-                    if (ImGui.sliderFloat("Amplitude", floatBuffer, 0.0f, 10.0f, "%.1f")) {
+                    if (ImGui.sliderFloat("幅度", floatBuffer, 0.0f, 10.0f, "%.1f")) {
                         visuals.cameraShakeXAmplitude = floatBuffer[0];
                         visuals.cameraShakeYAmplitude = floatBuffer[0];
                         editorState.markDirty();
@@ -271,47 +271,47 @@ public class VisualsWindow {
             }
 
             // Camera Roll
-            if (ImGui.checkbox("Camera Roll", visuals.overrideRoll)) {
+            if (ImGui.checkbox("摄像机旋转", visuals.overrideRoll)) {
                 visuals.overrideRoll = !visuals.overrideRoll;
                 Minecraft.getInstance().levelRenderer.needsUpdate();
                 editorState.markDirty();
             }
             if (visuals.overrideRoll) {
                 floatBuffer[0] = visuals.overrideRollAmount;
-                if (ImGui.sliderFloat("Roll", floatBuffer, -180.0f, 180.0f, "%.1f")) {
+                if (ImGui.sliderFloat("旋转", floatBuffer, -180.0f, 180.0f, "%.1f")) {
                     visuals.overrideRollAmount = floatBuffer[0];
                     Minecraft.getInstance().levelRenderer.needsUpdate();
                     editorState.markDirty();
                 }
             }
 
-            visuals.overrideWeatherMode = ImGuiHelper.enumCombo("Weather", visuals.overrideWeatherMode);
+            visuals.overrideWeatherMode = ImGuiHelper.enumCombo("天气", visuals.overrideWeatherMode);
 
-            ImGuiHelper.separatorWithText("Other");
+            ImGuiHelper.separatorWithText("其他");
 
-            if (ImGui.checkbox("Rule of Thirds Guide", visuals.ruleOfThirdsGuide)) {
+            if (ImGui.checkbox("三分线", visuals.ruleOfThirdsGuide)) {
                 visuals.ruleOfThirdsGuide = !visuals.ruleOfThirdsGuide;
                 editorState.markDirty();
             }
 
-            if (ImGui.checkbox("Center Guide", visuals.centerGuide)) {
+            if (ImGui.checkbox("十字线", visuals.centerGuide)) {
                 visuals.centerGuide = !visuals.centerGuide;
                 editorState.markDirty();
             }
 
-            if (ImGui.checkbox("Camera Path", visuals.cameraPath)) {
+            if (ImGui.checkbox("摄像机路径", visuals.cameraPath)) {
                 visuals.cameraPath = !visuals.cameraPath;
                 editorState.markDirty();
             }
 
-            visuals.sizing = ImGuiHelper.enumCombo("Sizing", visuals.sizing);
+            visuals.sizing = ImGuiHelper.enumCombo("缩放", visuals.sizing);
             if (visuals.sizing == Sizing.CHANGE_ASPECT_RATIO) {
-                visuals.changeAspectRatio = ImGuiHelper.enumCombo("Aspect", visuals.changeAspectRatio);
+                visuals.changeAspectRatio = ImGuiHelper.enumCombo("长宽比", visuals.changeAspectRatio);
                 editorState.markDirty();
             }
 
             if (!editorState.hideDuringExport.isEmpty()) {
-                if (ImGui.button("Unhide All Entities")) {
+                if (ImGui.button("取消隐藏所有实体")) {
                     editorState.hideDuringExport.clear();
                     editorState.markDirty();
                 }
@@ -342,7 +342,7 @@ public class VisualsWindow {
             }
         }
 
-        String description = "Added " + keyframeType.name() + " keyframe";
+        String description = "添加 " + keyframeType.name() + " 帧";
         int newKeyframeTrackIndex = scene.keyframeTracks.size();
         scene.push(new EditorSceneHistoryEntry(
             List.of(new EditorSceneHistoryAction.RemoveTrack(keyframeType, newKeyframeTrackIndex)),

@@ -29,15 +29,15 @@ public class PreferencesWindow {
     public static void render() {
         if (open) {
             open = false;
-            ImGui.openPopup("###偏好设置");
+            ImGui.openPopup("###Preferences");
         }
 
-        boolean wasOpen = ImGui.isPopupOpen("###偏好设置");
+        boolean wasOpen = ImGui.isPopupOpen("###Preferences");
 
         ImVec2 center = ImGui.getMainViewport().getCenter();
         ImGui.setNextWindowPos(center.x, center.y, ImGuiCond.Appearing, 0.5f, 0.5f);
         ImGui.setNextWindowSize(400, 0);
-        if (ImGuiHelper.beginPopupModalCloseable("偏好设置###偏好设置", ImGuiWindowFlags.NoResize)) {
+        if (ImGuiHelper.beginPopupModalCloseable("偏好设置###Preferences", ImGuiWindowFlags.NoResize)) {
             if (close) {
                 close = false;
                 ImGui.closeCurrentPopup();
@@ -79,7 +79,7 @@ public class PreferencesWindow {
             ImGuiHelper.endPopupModalCloseable();
         }
 
-        if (wasOpen && !ImGui.isPopupOpen("###偏好设置")) {
+        if (wasOpen && !ImGui.isPopupOpen("###Preferences")) {
             Flashback.getConfig().saveToDefaultFolder();
         }
 
