@@ -107,9 +107,9 @@ public class PlayerListWindow {
         }
 
         ImGui.setNextWindowSizeConstraints(250, 50, 5000, 5000);
-        if (ImGui.begin("Player List###PlayerList", open, ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoFocusOnAppearing)) {
-            ImGui.setNextItemWidth(ImGui.getContentRegionAvailX() - ImGuiHelper.calcTextWidth("Search") - 32);
-            if (ImGui.inputText("Search", search)) {
+        if (ImGui.begin("玩家列表###玩家列表", open, ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoFocusOnAppearing)) {
+            ImGui.setNextItemWidth(ImGui.getContentRegionAvailX() - ImGuiHelper.calcTextWidth("搜索") - 32);
+            if (ImGui.inputText("搜索", search)) {
                 lastSearch = null;
             }
 
@@ -121,7 +121,7 @@ public class PlayerListWindow {
             }
 
             if (hasNpcs || includeNpcs) {
-                if (ImGui.checkbox("Include NPCs", includeNpcs)) {
+                if (ImGui.checkbox("包含 NPC", includeNpcs)) {
                     includeNpcs = !includeNpcs;
                     lastSearch = null;
                 }
@@ -138,24 +138,24 @@ public class PlayerListWindow {
 
                 ImGui.text(profile.getName());
                 ImGui.sameLine();
-                if (ImGui.smallButton("TP")) {
+                if (ImGui.smallButton("传送")) {
                     Minecraft.getInstance().getConnection().sendUnsignedCommand("teleport " + profile.getId());
                     lastUpdate = currentTime;
                 }
                 if (editorState != null) {
                     ImGui.sameLine();
                     if (editorState.hideDuringExport.contains(profile.getId())) {
-                        if (ImGui.smallButton("Show")) {
+                        if (ImGui.smallButton("显示")) {
                             editorState.hideDuringExport.remove(profile.getId());
                             lastUpdate = currentTime;
                         }
-                    } else if (ImGui.smallButton("Hide")) {
+                    } else if (ImGui.smallButton("隐藏")) {
                         editorState.hideDuringExport.add(profile.getId());
                         lastUpdate = currentTime;
                     }
                 }
                 ImGui.sameLine();
-                if (ImGui.smallButton("Spectate")) {
+                if (ImGui.smallButton("观看")) {
                     Minecraft.getInstance().getConnection().sendUnsignedCommand("spectate " + profile.getId());
                     lastUpdate = currentTime;
                 }
@@ -165,12 +165,12 @@ public class PlayerListWindow {
             ImGui.separator();
 
             if (editorState != null) {
-                if (ImGui.button("Hide All")) {
+                if (ImGui.button("隐藏所有")) {
                     changeVisibilityOfAll(editorState, false);
                     lastUpdate = currentTime;
                 }
                 ImGui.sameLine();
-                if (ImGui.button("Show All")) {
+                if (ImGui.button("显示所有")) {
                     changeVisibilityOfAll(editorState, true);
                     lastUpdate = currentTime;
                 }
