@@ -21,36 +21,36 @@ public class ExportQueueWindow {
 
     public static void render() {
         if (open) {
-            ImGui.openPopup("###ExportQueue");
+            ImGui.openPopup("###导出队列");
             open = false;
         }
 
-        if (ImGuiHelper.beginPopupModalCloseable("Export Queue###ExportQueue", ImGuiWindowFlags.AlwaysAutoResize)) {
+        if (ImGuiHelper.beginPopupModalCloseable("导出队列###导出队列", ImGuiWindowFlags.AlwaysAutoResize)) {
             ImGuiHelper.pushStyleColor(ImGuiCol.Border, 0xFF808080);
 
             boolean canStartJob = !ExportJobQueue.queuedJobs.isEmpty() && Flashback.EXPORT_JOB == null;
             boolean canRemoveJob = !ExportJobQueue.queuedJobs.isEmpty();
 
-            ImGui.text("Jobs");
-            if (ImGui.beginChild("##Jobs", 300, 150, true)) {
-                if (ImGui.beginTable("##JobTable", 3, ImGuiTableFlags.SizingFixedFit)) {
-                    ImGui.tableSetupColumn("Name", ImGuiTableColumnFlags.WidthStretch);
+            ImGui.text("任务");
+            if (ImGui.beginChild("##任务", 300, 150, true)) {
+                if (ImGui.beginTable("##任务表", 3, ImGuiTableFlags.SizingFixedFit)) {
+                    ImGui.tableSetupColumn("任务名", ImGuiTableColumnFlags.WidthStretch);
 
                     int startJob = -1;
                     int removeJob = -1;
 
                     for (int i = 0; i < ExportJobQueue.queuedJobs.size(); i++) {
                         ExportSettings queuedJob = ExportJobQueue.queuedJobs.get(i);
-                        String name = queuedJob.name() == null ? "Job #" + (i+1) : queuedJob.name();
+                        String name = queuedJob.name() == null ? "任务 #" + (i+1) : queuedJob.name();
 
                         ImGui.tableNextColumn();
                         ImGui.text(name);
                         ImGui.tableNextColumn();
-                        if (ImGui.smallButton("Start")) {
+                        if (ImGui.smallButton("开始")) {
                             startJob = i;
                         }
                         ImGui.tableNextColumn();
-                        if (ImGui.smallButton("Remove")) {
+                        if (ImGui.smallButton("移除")) {
                             removeJob = i;
                         }
                     }
@@ -71,7 +71,7 @@ public class ExportQueueWindow {
 
 
             if (!canStartJob) ImGui.beginDisabled();
-            if (ImGui.button("Start All") && canStartJob) {
+            if (ImGui.button("开始所有") && canStartJob) {
                 ExportJobQueue.drainingQueue = true;
             }
             if (!canStartJob) ImGui.endDisabled();
@@ -79,7 +79,7 @@ public class ExportQueueWindow {
             ImGui.sameLine();
 
             if (!canRemoveJob) ImGui.beginDisabled();
-            if (ImGui.button("Remove All") && canRemoveJob) {
+            if (ImGui.button("移除所有") && canRemoveJob) {
                 ExportJobQueue.queuedJobs.clear();
             }
             if (!canRemoveJob) ImGui.endDisabled();
