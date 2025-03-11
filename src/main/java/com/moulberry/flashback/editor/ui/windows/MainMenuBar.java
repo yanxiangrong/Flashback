@@ -23,25 +23,25 @@ public class MainMenuBar {
     public static void renderInner() {
         FlashbackConfig config = Flashback.getConfig();
 
-        if (ImGui.beginMenu("File")) {
-            if (ImGui.menuItem("Export Video")) {
+        if (ImGui.beginMenu("文件")) {
+            if (ImGui.menuItem("导出视频")) {
                 StartExportWindow.open();
             }
             if (!ExportJobQueue.queuedJobs.isEmpty()) {
-                String name = "Export Queue (" + ExportJobQueue.count() + ")";
-                if (ImGui.menuItem(name + "###QueuedJobs")) {
+                String name = "导出队列 (" + ExportJobQueue.count() + ")";
+                if (ImGui.menuItem(name + "###队列任务")) {
                     ExportQueueWindow.open();
                 }
             }
-            if (ImGui.menuItem("Export Screenshot")) {
+            if (ImGui.menuItem("导出截屏")) {
                 ExportScreenshotWindow.open();
             }
             ImGui.separator();
-            if (ImGui.menuItem("Open Replay")) {
+            if (ImGui.menuItem("打开回放")) {
                 Flashback.openReplayFromFileBrowser();
             }
             if (!config.recentReplays.isEmpty()) {
-                if (ImGui.beginMenu("Open Recent")) {
+                if (ImGui.beginMenu("打开最近")) {
                     Path replayFolder = Flashback.getReplayFolder();
                     for (String recentReplay : config.recentReplays) {
                         Path path = Path.of(recentReplay);
@@ -66,7 +66,7 @@ public class MainMenuBar {
                     ImGui.endMenu();
                 }
             }
-            if (ImGui.menuItem("Exit Replay")) {
+            if (ImGui.menuItem("退出回放")) {
                 Minecraft minecraft = Minecraft.getInstance();
                 if (minecraft.level != null) {
                     minecraft.level.disconnect();
@@ -76,25 +76,25 @@ public class MainMenuBar {
             }
             ImGui.endMenu();
         }
-        if (ImGui.menuItem("Preferences")) {
+        if (ImGui.menuItem("偏好设置")) {
             PreferencesWindow.open();
         }
 
         ImGui.separator();
 
-        if (ImGui.menuItem("Player List")) {
+        if (ImGui.menuItem("玩家列表")) {
             toggleWindow("player_list");
         }
-        if (ImGui.menuItem("Movement")) {
+        if (ImGui.menuItem("动作")) {
             toggleWindow("movement");
         }
-        if (ImGui.menuItem("Render Filter")) {
+        if (ImGui.menuItem("渲染过滤器")) {
             toggleWindow("render_filter");
         }
 
         ImGui.separator();
 
-        if (ImGui.menuItem("Hide (F1)")) {
+        if (ImGui.menuItem("隐藏 (F1)")) {
             Minecraft.getInstance().options.hideGui = true;
         }
     }
