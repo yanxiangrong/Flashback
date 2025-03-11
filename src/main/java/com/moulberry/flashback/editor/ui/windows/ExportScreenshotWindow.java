@@ -27,10 +27,10 @@ public class ExportScreenshotWindow {
     public static void render() {
         if (open) {
             open = false;
-            ImGui.openPopup("###ExportScreenshot");
+            ImGui.openPopup("###导出截图");
         }
 
-        if (ImGuiHelper.beginPopupModalCloseable("Export screenshot###ExportScreenshot", ImGuiWindowFlags.AlwaysAutoResize)) {
+        if (ImGuiHelper.beginPopupModalCloseable("导出截图###导出截图", ImGuiWindowFlags.AlwaysAutoResize)) {
             if (close) {
                 close = false;
                 ImGui.closeCurrentPopup();
@@ -45,31 +45,31 @@ public class ExportScreenshotWindow {
                 config.resolution = new int[]{1920, 1080};
             }
 
-            ImGuiHelper.inputInt("Resolution", config.resolution);
+            ImGuiHelper.inputInt("分辨率", config.resolution);
             config.resolution[0] = Math.max(1, config.resolution[0]);
             config.resolution[1] = Math.max(1, config.resolution[1]);
 
             EditorState editorState = EditorStateManager.getCurrent();
 
-            if (ImGui.checkbox("SSAA", config.ssaa)) {
+            if (ImGui.checkbox("超级采样抗锯齿", config.ssaa)) {
                 config.ssaa = !config.ssaa;
             }
-            ImGuiHelper.tooltip("Supersampling Anti-Aliasing: Remove jagged edges by rendering the game at double resolution and downscaling");
+            ImGuiHelper.tooltip("超级采样抗锯齿：通过以双倍分辨率渲染游戏并缩小尺寸来消除锯齿边缘");
 
             ImGui.sameLine();
 
-            if (ImGui.checkbox("No GUI", config.noGui)) {
+            if (ImGui.checkbox("无GUI", config.noGui)) {
                 config.noGui = !config.noGui;
             }
-            ImGuiHelper.tooltip("Removes all UI from the screen, rendering only the world");
+            ImGuiHelper.tooltip("删除屏幕上的所有 UI，仅渲染世界");
 
             if (editorState != null && !editorState.replayVisuals.renderSky) {
-                if (ImGui.checkbox("Transparent Sky", config.transparentBackground)) {
+                if (ImGui.checkbox("透明的天空", config.transparentBackground)) {
                     config.transparentBackground = !config.transparentBackground;
                 }
             }
 
-            if (editorState != null && ImGui.button("Take Screenshot")) {
+            if (editorState != null && ImGui.button("截屏")) {
                 String defaultName = StartExportWindow.getDefaultFilename(null, "png", config);
                 String defaultExportPathString = config.defaultExportPath;
 
