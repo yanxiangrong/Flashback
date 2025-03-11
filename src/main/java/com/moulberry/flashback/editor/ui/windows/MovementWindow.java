@@ -41,15 +41,15 @@ public class MovementWindow {
         if (!wasDocked) {
             flags |= ImGuiWindowFlags.AlwaysAutoResize;
         }
-        if (ImGui.begin("Movement###Movement", open, flags)) {
+        if (ImGui.begin("动作###动作", open, flags)) {
             wasDocked = ImGui.isWindowDocked();
 
             FlashbackConfig config = Flashback.getConfig();
             int[] direction = new int[]{config.flightCameraDirection ? 1 : 0};
 
-            ImGuiHelper.combo("Direction", direction, new String[]{
-                "Horizontal",
-                "Camera"
+            ImGuiHelper.combo("方向", direction, new String[]{
+                "水平",
+                "相机"
             });
             boolean flightCameraDirection = direction[0] == 1;
             if (config.flightCameraDirection != flightCameraDirection) {
@@ -58,33 +58,33 @@ public class MovementWindow {
             }
 
             float[] momentum = new float[]{config.flightMomentum};
-            ImGui.sliderFloat("Momentum", momentum, 0.0f, 1.0f);
+            ImGui.sliderFloat("动量", momentum, 0.0f, 1.0f);
             if (config.flightMomentum != momentum[0]) {
                 config.flightMomentum = momentum[0];
                 config.delayedSaveToDefaultFolder();
             }
 
-            if (ImGui.checkbox("Lock X", config.flightLockX)) {
+            if (ImGui.checkbox("锁定 X", config.flightLockX)) {
                 config.flightLockX = !config.flightLockX;
                 config.delayedSaveToDefaultFolder();
             }
             ImGui.sameLine();
-            if (ImGui.checkbox("Lock Y", config.flightLockY)) {
+            if (ImGui.checkbox("锁定 Y", config.flightLockY)) {
                 config.flightLockY = !config.flightLockY;
                 config.delayedSaveToDefaultFolder();
             }
             ImGui.sameLine();
-            if (ImGui.checkbox("Lock Z", config.flightLockZ)) {
+            if (ImGui.checkbox("锁定 Z", config.flightLockZ)) {
                 config.flightLockZ = !config.flightLockZ;
                 config.delayedSaveToDefaultFolder();
             }
 
-            if (ImGui.checkbox("Lock Yaw", config.flightLockYaw)) {
+            if (ImGui.checkbox("锁定偏航", config.flightLockYaw)) {
                 config.flightLockYaw = !config.flightLockYaw;
                 config.delayedSaveToDefaultFolder();
             }
             ImGui.sameLine();
-            if (ImGui.checkbox("Lock Pitch", config.flightLockPitch)) {
+            if (ImGui.checkbox("锁定俯仰", config.flightLockPitch)) {
                 config.flightLockPitch = !config.flightLockPitch;
                 config.delayedSaveToDefaultFolder();
             }
