@@ -65,7 +65,7 @@ public class PreferencesWindow {
             config.defaultInterpolationType = ImGuiHelper.enumCombo("默认插值", config.defaultInterpolationType);
 
             if (ImGui.collapsingHeader("高级")) {
-                ImGui.textWrapped("除非您知道自己在做什么，否则请勿更改其中任何一项！！如果您更改其中一项然后在网上到处问，你就是SB！！");
+                ImGui.textWrapped("除非您知道自己在做什么，否则请勿更改其中任何一项！！如果您更改其中一项然后在网上到处问，您会被嘲笑！！");
                 if (ImGui.checkbox("Disable increased first-person updates", config.disableIncreasedFirstPersonUpdates)) {
                     config.disableIncreasedFirstPersonUpdates = !config.disableIncreasedFirstPersonUpdates;
                     config.delayedSaveToDefaultFolder();
