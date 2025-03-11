@@ -29,15 +29,15 @@ public class PreferencesWindow {
     public static void render() {
         if (open) {
             open = false;
-            ImGui.openPopup("###Preferences");
+            ImGui.openPopup("###偏好设置");
         }
 
-        boolean wasOpen = ImGui.isPopupOpen("###Preferences");
+        boolean wasOpen = ImGui.isPopupOpen("###偏好设置");
 
         ImVec2 center = ImGui.getMainViewport().getCenter();
         ImGui.setNextWindowPos(center.x, center.y, ImGuiCond.Appearing, 0.5f, 0.5f);
         ImGui.setNextWindowSize(400, 0);
-        if (ImGuiHelper.beginPopupModalCloseable("Preferences###Preferences", ImGuiWindowFlags.NoResize)) {
+        if (ImGuiHelper.beginPopupModalCloseable("偏好设置###偏好设置", ImGuiWindowFlags.NoResize)) {
             if (close) {
                 close = false;
                 ImGui.closeCurrentPopup();
@@ -48,24 +48,24 @@ public class PreferencesWindow {
             FlashbackConfig config = Flashback.getConfig();
 
             // Exporting
-            ImGuiHelper.separatorWithText("Exporting");
+            ImGuiHelper.separatorWithText("导出");
 
             ImString imString = ImGuiHelper.createResizableImString(config.defaultExportFilename);
             ImGui.setNextItemWidth(200);
-            if (ImGui.inputText("Export Filename", imString)) {
+            if (ImGui.inputText("导出文件名", imString)) {
                 config.defaultExportFilename = ImGuiHelper.getString(imString);
                 config.delayedSaveToDefaultFolder();
             }
-            ImGuiHelper.tooltip("The default filename when exporting\nVariables:\n\t%date%\tyear-month-day\n\t%time%\thh_mm_ss\n\t%replay%\tReplay name\n\t%seq%\tExport count for this session");
+            ImGuiHelper.tooltip("导出时的默认文件名\n变量:\n\t%date%\tyear-month-day\n\t%time%\thh_mm_ss\n\t%replay%\t回放名\n\t%seq%\t此会话的导出计数");
 
             // Keyframes
-            ImGuiHelper.separatorWithText("Keyframes");
+            ImGuiHelper.separatorWithText("关键帧");
 
             ImGui.setNextItemWidth(200);
-            config.defaultInterpolationType = ImGuiHelper.enumCombo("Default Interpolation", config.defaultInterpolationType);
+            config.defaultInterpolationType = ImGuiHelper.enumCombo("默认插值", config.defaultInterpolationType);
 
-            if (ImGui.collapsingHeader("Advanced")) {
-                ImGui.textWrapped("Don't change any of these unless you know what you're doing!! If you change one of these and then ask for support you will be made fun of!!");
+            if (ImGui.collapsingHeader("高级")) {
+                ImGui.textWrapped("除非您知道自己在做什么，否则请勿更改其中任何一项！！如果您更改其中一项然后在网上到处问，你就是SB！！");
                 if (ImGui.checkbox("Disable increased first-person updates", config.disableIncreasedFirstPersonUpdates)) {
                     config.disableIncreasedFirstPersonUpdates = !config.disableIncreasedFirstPersonUpdates;
                     config.delayedSaveToDefaultFolder();
@@ -79,7 +79,7 @@ public class PreferencesWindow {
             ImGuiHelper.endPopupModalCloseable();
         }
 
-        if (wasOpen && !ImGui.isPopupOpen("###Preferences")) {
+        if (wasOpen && !ImGui.isPopupOpen("###偏好设置")) {
             Flashback.getConfig().saveToDefaultFolder();
         }
 
