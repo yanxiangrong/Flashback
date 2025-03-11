@@ -47,7 +47,7 @@ public class RenderFilterWindow {
         if (!wasDocked) {
             flags |= ImGuiWindowFlags.AlwaysAutoResize;
         }
-        if (ImGui.begin("Render Filter###Render Filter", open, flags)) {
+        if (ImGui.begin("渲染过滤器###渲染过滤器", open, flags)) {
             wasDocked = ImGui.isWindowDocked();
 
             FlashbackConfig config = Flashback.getConfig();
@@ -55,7 +55,7 @@ public class RenderFilterWindow {
             if (!config.signedRenderFilter) {
                 String name = Minecraft.getInstance().getGameProfile().getName();
                 ImGui.pushTextWrapPos(300);
-                ImGui.textWrapped("我, " + name + ", 我郑重发誓，我不会在“渲染过滤器”菜单中关闭某些功能，然后在 Flashback 支持中询问为什么实体没有被渲染。");
+                ImGui.textWrapped("我, " + name + ", 我郑重发誓，我不会在“渲染过滤器”菜单中关闭某些功能，然后在 Flashback 支持中询问为什么实体没有被渲染。（白话翻译：你不要在渲染过滤器把一些东西给关了，然后去问作者为什么xxx没有显示。因为作者被问烦了所以写了这一段话。）");
                 if (ImGui.checkbox("Signed, " + name + ".", false)) {
                     config.signedRenderFilter = true;
                     config.delayedSaveToDefaultFolder();
@@ -72,9 +72,9 @@ public class RenderFilterWindow {
                 return;
             }
 
-            if (ImGui.beginTabBar("##Select")) {
-                if (ImGui.beginTabItem("Entities")) {
-                    ImGui.inputText("Search", entitySearch);
+            if (ImGui.beginTabBar("##选择")) {
+                if (ImGui.beginTabItem("实体")) {
+                    ImGui.inputText("搜索", entitySearch);
                     String searchString = ImGuiHelper.getString(entitySearch).trim().toLowerCase(Locale.ROOT);
                     if (!searchString.equals(lastEntitySearch)) {
                         lastEntitySearch = searchString;
@@ -95,7 +95,7 @@ public class RenderFilterWindow {
                     }
 
                     if (searchedEntityTypes.isEmpty()) {
-                        ImGui.text("No entities found");
+                        ImGui.text("未找到任何实体");
                     } else {
                         if (ImGui.beginChild("##Scroller", 0, 300)) {
                             ImGuiListClipper.forEach(searchedEntityTypes.size(), new ImListClipperCallback() {
@@ -119,11 +119,11 @@ public class RenderFilterWindow {
                         }
                         ImGui.endChild();
 
-                        if (ImGui.smallButton("Enable All")) {
+                        if (ImGui.smallButton("启动所有")) {
                             editorState.filteredEntities.clear();
                         }
                         ImGui.sameLine();
-                        if (ImGui.smallButton("Disable All")) {
+                        if (ImGui.smallButton("禁用所有")) {
                             for (EntityType<?> entityType : BuiltInRegistries.ENTITY_TYPE) {
                                 ResourceLocation resourceLocation = BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
                                 editorState.filteredEntities.add(resourceLocation.toString());
